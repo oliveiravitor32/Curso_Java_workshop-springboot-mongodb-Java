@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import com.oliveiravitor.workshopmongo.domain.Post;
 import com.oliveiravitor.workshopmongo.domain.User;
 import com.oliveiravitor.workshopmongo.dto.AuthorDTO;
+import com.oliveiravitor.workshopmongo.dto.CommentDTO;
 import com.oliveiravitor.workshopmongo.repository.PostRepository;
 import com.oliveiravitor.workshopmongo.repository.UserRepository;
 
@@ -34,6 +35,8 @@ public class Instantiation implements CommandLineRunner{
 		userRepository.saveAll(Arrays.asList(maria, alex, bob));
 		
 		AuthorDTO authorMaria = new AuthorDTO(maria);
+		AuthorDTO authorAlex = new AuthorDTO(alex);
+		AuthorDTO authorBob = new AuthorDTO(bob);
 		
 		Post post1 = new Post(null, Instant.now(), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", authorMaria);
 
@@ -44,6 +47,15 @@ public class Instantiation implements CommandLineRunner{
 		
 		maria.getPosts().addAll(Arrays.asList(post1, post2));
 		userRepository.save(maria);
+		
+		
+		CommentDTO comm1 = new CommentDTO("Boa viagem!", Instant.now(), authorAlex);
+		CommentDTO comm2 = new CommentDTO("Aproveite!", Instant.now(), authorBob);
+		CommentDTO comm3 = new CommentDTO("Tenha um ótimo dia!", Instant.now(), authorAlex);
+		
+		post1.getComments().addAll(Arrays.asList(comm1, comm2));
+		post2.getComments().add(comm3);
+		
+		postRepository.saveAll(Arrays.asList(post1, post2));
 	}
-
 }
